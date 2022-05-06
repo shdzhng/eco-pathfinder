@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./style.css";
-import Testmap from "./testmap";
+import MapContainer from "./testmap";
+import { Map, GoogleApiWrapper } from "google-maps-react";
 
 export default class App extends Component {
   constructor(props) {
@@ -57,8 +58,8 @@ export default class App extends Component {
           <input type="text" id="destination" name="destination"></input>
           <button type="submit">Go!</button>
         </form>
-        {Map}
-        <Testmap />
+
+        <MapContainer />
       </div>
     );
   }
