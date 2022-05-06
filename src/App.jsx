@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import axios from "axios";
 import "./style.css";
-import MapContainer from "./testmap";
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import MyComponent from "./Map";
+import InputTable from "./InputTable";
 
 export default class App extends Component {
   constructor(props) {
@@ -11,56 +10,63 @@ export default class App extends Component {
       startingPoint: "",
       destination: "",
       map: "",
+      center: {
+        lat: 37.802891,
+        lng: -122.266571,
+      },
     };
-  }
 
-  async handleRequest(startingPoint, destination) {
-    await axios
-      .get(
-        `https://httpbin.org/get?startingPoint=${startingPoint}&destination=${destination}`
-      )
-      .then((res) =>
-        console.log(
-          `From ${res.data.args.startingPoint} to ${res.data.args.destination}`
-        )
-      );
+    this.mapOnLoad = this.mapOnLoad.bind(this);
+    this.pan = this.pan.bind(this);
   }
 
   componentDidMount() {
-    this.setState({
-      map: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck&callback=initMap&v=weekly",
-    });
+    this.handleChangeState = this.handleChangeState(this);
   }
 
-  handleSubmit = (e) => {
-    const startingPoint = e.target.startingPoint.value;
-    const destination = e.target.destination.value;
-    this.handleRequest(startingPoint, destination);
-    this.setState(); //PICK UP WORK HERE!
-    console.log(this.state.startingPoint);
-    console.log(this.state.destination);
-    e.preventDefault();
+  mapOnLoad(newMap) {
+    this.setState({ map: newMap });
+    console.log(this.handleChangeState);
+  }
+
+  handleChangeState = (stateToChange, value) => {
+    // this.setState({ stateToChange: value });
+    console.log("hello");
+  };
+
+  pan = () => {
+    this.state.map.panTo(this.state.center);
   };
 
   render() {
-    let Map;
-    if (this.state.map) {
-      Map = this.state.map;
-    }
-    console.log(this.state);
-
     return (
       <div>
-        <form action="" onSubmit={this.handleSubmit}>
-          <label htmlFor="startingPoint">Starting Point</label>
-          <input type="text" id="startingPoint" name="startingPoint"></input>
-          <label htmlFor="destination">Destination</label>
-          <input type="text" id="destination" name="destination"></input>
-          <button type="submit">Go!</button>
-        </form>
-
-        <MapContainer />
+        <InputTable />
+        <MyComponent
+          center={this.state.center}
+          map={this.state.map}
+          mapOnLoad={this.mapOnLoad}
+          pan={this.pan}
+        />
       </div>
     );
   }
 }
+
+// async handleRequest(startingPoint, destination) {
+//   await axios
+//     .get(
+//       `https://httpbin.org/get?startingPoint=${startingPoint}&destination=${destination}`
+//     )
+//     .then((res) =>
+//       console.log(
+//         `From ${res.data.args.startingPoint} to ${res.data.args.destination}`
+//       )
+//     );
+// }
+
+// componentDidMount() {
+//   this.setState({
+//     map: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck&callback=initMap&v=weekly",
+//   });
+// }
