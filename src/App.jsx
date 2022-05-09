@@ -7,12 +7,6 @@ import { renderMap } from "./app/features/mapSlice";
 
 export default function App() {
   const mapData = useSelector((state) => state.map);
-  console.dir(mapData);
-
-  // mapOnLoad(newMap) {
-  //   this.setState({ map: newMap });
-  // }
-
   // componentDidMount(){
   //   useDispatch(renderMap())
   //   this.setState({
@@ -20,18 +14,11 @@ export default function App() {
   //   });
   // }
 
-  // pan = () => {
-  //   this.state.map.panTo(this.state.center);
-  // };
-
   return (
     <div>
-      <InputTable />
       <Map
         startLocation={mapData.value.startLocation}
         map={mapData.value.map}
-        // mapOnLoad={this.mapOnLoad}
-        // pan={this.pan}
       />
     </div>
   );

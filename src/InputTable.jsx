@@ -6,9 +6,6 @@ import {
 } from "./app/features/mapSlice";
 
 export default function InputTable(props) {
-  const { handleChangeState, startingPoint, destination, handleRequest } =
-    props;
-
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
