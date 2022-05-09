@@ -1,4 +1,9 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateStartLocation,
+  updateEndLocation,
+} from "./app/features/mapSlice";
 import {
   Marker,
   GoogleMap,
@@ -7,6 +12,8 @@ import {
   Autocomplete,
 } from "@react-google-maps/api";
 
+import { GoogleApiWrapper } from "google-maps-react";
+
 const containerStyle = {
   width: "400px",
   height: "400px",
@@ -14,18 +21,25 @@ const containerStyle = {
   marginTop: "2rem",
 };
 
-function MyComponent(props) {
-  const { mapOnLoad, center, map, pan } = props;
+function Map() {
+  const { startLocation, map, endLocation } = useSelector(
+    (state) => state.map
+  ).value;
+  const mapData = useSelector((state) => state.map);
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck",
-    libraries: ["places"],
   });
 
-  return isLoaded ? (
+  if (!isLoaded) {
+    return <h1> Map is Loading, thank you for your patience</h1>;
+  }
+
+  return (
     <>
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
+        center={startLocation}
         zoom={15}
         options={{
           streetViewControl: false,
@@ -33,17 +47,16 @@ function MyComponent(props) {
           fullscreenControl: false,
           zoomControl: false,
         }}
-        onLoad={(map) => mapOnLoad(map)}
+        // onLoad={useDispatch(renderMap(map)}
       >
-        <Marker position={center} />
-
-        {/* Child components, such as markers, info windows, etc. */}
+        <Marker position={startLocation} />
       </GoogleMap>
-      <button onClick={() => pan({ center })}>Return to Center</button>
+      {/* <button onClick={() => pan({ startLocation })}>Return to Center</button> */}
     </>
-  ) : (
-    <></>
   );
 }
 
-export default React.memo(MyComponent);
+// export default React.memo(Map);
+export default GoogleApiWrapper({
+  apiKey: "AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck",
+})(Map);

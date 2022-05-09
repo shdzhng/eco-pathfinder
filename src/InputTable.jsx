@@ -1,16 +1,22 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateStartLocation,
+  updateEndLocation,
+} from "./app/features/mapSlice";
 
 export default function InputTable(props) {
   const { handleChangeState, startingPoint, destination, handleRequest } =
     props;
 
+  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     const newStartingPoint = e.target.startingPoint.value;
     const newDestination = e.target.destination.value;
-    console.log(newStartingPoint, newDestination);
+    dispatch(updateStartLocation(newStartingPoint));
+    dispatch(updateEndLocation(newDestination));
     e.preventDefault();
-
-    // this.setState(); //PICK UP WORK HERE!
   };
 
   return (
