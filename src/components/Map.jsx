@@ -1,36 +1,23 @@
 import React from "react";
-import mapStyles from "../mapStyles";
+import mapStyles from "../styles/mapStyles";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  updateStartLocation,
-  updateEndLocation,
-  updateSelectedLocation,
-} from "../app/features/mapSlice";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+import { updateSelectedLocation } from "../app/features/mapSlice";
 import {
   useLoadScript,
   GoogleMap,
   Marker,
-  InfoWindow,
-  InfoBox,
-  Autocomplete,
   DirectionsRenderer,
   DirectionsService,
 } from "@react-google-maps/api";
-import { GoogleApiWrapper, google } from "google-maps-react";
-import axios from "axios";
+import { GoogleApiWrapper } from "google-maps-react";
 import Search from "./Search";
 
 function Map() {
   const { mapData } = useSelector((state) => state.map.value);
   const dispatch = useDispatch();
 
-  const { startLocation, map, endLocation, selectedLocation } = useSelector(
-    (state) => state.map
-  ).value;
+  const { startLocation, map, endLocation, selectedLocation, directions } =
+    useSelector((state) => state.map).value;
 
   const onMapClick = React.useCallback((e) => {
     const newLocation = {
@@ -76,6 +63,7 @@ function Map() {
         onClick={onMapClick}
         // onLoad={onMapLoad}
       >
+        {directions && <DirectionsRenderer directions={directions[0]} />}
         <Marker position={startLocation} />
         <Marker position={selectedLocation} />
       </GoogleMap>

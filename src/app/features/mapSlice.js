@@ -9,7 +9,7 @@ const initialState = {
     lat: 0,
     lng: 0,
   },
-  directions: {},
+  directions: [],
   selectedLocation: {},
 };
 
@@ -28,6 +28,10 @@ export const mapSlice = createSlice({
     updateMap: (state, action) => {
       state.value.map = action.payload;
     },
+    updateDirections: (state, action) => {
+      state.value.directions = action.payload;
+      console.log(action.payload);
+    },
     updateSelectedLocation: (state, action) => {
       state.value.selectedLocation = action.payload;
     },
@@ -39,6 +43,7 @@ export const {
   updateEndLocation,
   updateMap,
   updateSelectedLocation,
+  updateDirections,
 } = mapSlice.actions;
 
 export default mapSlice.reducer;

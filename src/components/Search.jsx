@@ -3,15 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateStartLocation,
   updateEndLocation,
+  updateDirections,
 } from "../app/features/mapSlice";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
 
 export default function Search() {
-  const { startLocation, map, endLocation, selectedLocation } = useSelector(
-    (state) => state.map
-  ).value;
+  const { startLocation, map, endLocation, selectedLocation, directions } =
+    useSelector((state) => state.map).value;
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,7 +60,8 @@ export default function Search() {
 
     const directionsService = new window.google.maps.DirectionsService();
     const { routes, status } = await directionsService.__proto__.route(req);
-    console.log(routes[0].legs[0]);
+    await dispatch(updateDirections(routes));
+    console.log(routes);
   };
 
   return (

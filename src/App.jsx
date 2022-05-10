@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+import "./styles/style.css";
 import Map from "./components/Map";
 import Search from "./components/Search";
 
