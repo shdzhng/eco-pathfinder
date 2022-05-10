@@ -1,13 +1,31 @@
 body {
   display: grid;
+  margin: 0;
+}
+
+label {
+  font-size: 1.5rem;
+  color: #ff00bf;
 }
 
 form {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  margin: 0;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  background-color: #ffffff90;
+  border-radius: 1rem;
 }
 
 button {
   width: 50%;
+  border-radius: 1rem;
+  border: 0px none;
+  background-color: #ff00bf;
+  color: white;
+  padding: 0.25rem 0;
 }

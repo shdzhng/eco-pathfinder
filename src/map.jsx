@@ -1,62 +1,102 @@
-import React, { useState } from "react";
+import React from "react";
+import mapStyles from "./mapStyles";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateStartLocation,
   updateEndLocation,
+  updateSelectedLocation,
 } from "./app/features/mapSlice";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
 import {
-  useJsApiLoader,
+  useLoadScript,
   GoogleMap,
   Marker,
+  InfoWindow,
+  InfoBox,
   Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { GoogleApiWrapper, google } from "google-maps-react";
 import axios from "axios";
 
-const containerStyle = {
-  width: "400px",
-  height: "400px",
-  border: "2px solid black",
-  marginTop: "2rem",
-};
-
 function Map() {
-  const mapData = useSelector((state) => state.map);
+  const { mapData } = useSelector((state) => state.map.value);
   const dispatch = useDispatch();
-  const { startLocation, map, endLocation } = useSelector(
+
+  const { startLocation, map, endLocation, selectedLocation } = useSelector(
     (state) => state.map
   ).value;
-  let latestOrigin = "";
-  let latestDestination = "";
 
+  const onMapClick = React.useCallback((e) => {
+    const newLocation = {
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    };
+    dispatch(updateSelectedLocation(newLocation));
+  }, []);
+
+  const mapRef = React.useRef();
+  const onMapLoad = React.useCallback((map) => {
+    console.log(map);
+    mapRef.current = map;
+  }, []);
+
+  /////// render map //////
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+  });
+
+  if (loadError) return "Error loading maps";
+  if (!isLoaded) return "Map is Loading";
+
+  const options = {
+    styles: mapStyles,
+    disableDefaultUI: true,
+  };
+
+  const containerStyle = {
+    width: "100vw",
+    height: "100vh",
+  };
+
+  return (
+    <div id="navContainer">
+      <Search />
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={startLocation}
+        zoom={15}
+        options={options}
+        onClick={onMapClick}
+        onLoad={onMapLoad}
+      >
+        <Marker position={startLocation} />
+        <Marker position={selectedLocation} />
+      </GoogleMap>
+    </div>
+  );
+}
+
+function Search() {
+  const { startLocation, map, endLocation, selectedLocation } = useSelector(
+    (state) => state.map
+  ).value;
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    latestOrigin = e.target.startingPoint.value;
-    latestDestination = e.target.destination.value;
-    e.target.destination.value = "";
-    e.target.startingPoint.value = "";
 
-    const findLatLng = async (address, location) => {
-      const result = await getGeocode({ address });
-      const { lat, lng } = await getLatLng(result[0]);
-
-      if ((location = "origin")) {
-        dispatch(updateStartLocation({ lat, lng }));
-      } else {
-        dispatch(updateEndLocation({ lat, lng }));
-      }
-
-      // dispatch(updateEndLocation(destination));
-      return lat + "," + lng;
-    };
-
+    const latestOrigin = e.target.startingPoint.value;
+    const latestDestination = e.target.destination.value;
     const origin = await findLatLng(latestOrigin, "origin");
     const destination = await findLatLng(latestDestination, "destination");
+
+    e.target.destination.value = "";
+    e.target.startingPoint.value = "";
 
     if (origin && destination) {
       getDirections(origin, destination);
@@ -65,69 +105,59 @@ function Map() {
     }
   };
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck",
-    libraries: "places",
-  });
+  const findLatLng = async (address, location) => {
+    const result = await getGeocode({ address });
+    const { lat, lng } = await getLatLng(result[0]);
+
+    if ((location = "origin")) {
+      dispatch(updateStartLocation({ lat, lng }));
+    } else {
+      dispatch(updateEndLocation({ lat, lng }));
+    }
+    return lat + "," + lng;
+  };
 
   const getDirections = async (origin, destination) => {
     const response = await axios
       .post(
-        `/maps/api/directions/json?key=AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck&origin=${origin}&destination=${destination}`
+        `/maps/api/directions/json?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${origin}&destination=${destination}`
       )
       .then((response) => {
-        console.log(response.data);
-        console.log(mapData);
+        return response.data;
       });
 
-    // const directionService = new google.maps.DirectionsService();
-    //     const result = await directionService(request);
+    const req = {
+      origin,
+      destination,
+      travelMode: "DRIVING",
+    };
+
+    const directionService = new google.maps.DirectionsService();
+    const result = await directionService.route(req);
   };
 
-  if (!isLoaded) {
-    return <h1> Map is Loading, thank you for your patience</h1>;
-  }
-
   return (
-    <>
-      <div>
-        <form
-          action=""
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-        >
-          <label htmlFor="startingPoint">Starting Point:{latestOrigin}</label>
-          <Autocomplete>
-            <input type="text" id="startingPoint" name="startingPoint"></input>
-          </Autocomplete>
-          <br />
-          <label htmlFor="destination">Destination:</label>
-          <Autocomplete>
-            <input type="text" id="destination" name="destination"></input>
-          </Autocomplete>
-          <br />
-          <button type="submit">Show me de wey</button>
-        </form>
-      </div>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={startLocation}
-        zoom={15}
-        options={{
-          streetViewControl: false,
-          mapTypeControl: false,
-          fullscreenControl: false,
-          zoomControl: false,
-        }}
-      >
-        <Marker position={startLocation} />
-      </GoogleMap>
-    </>
+    <form
+      action=""
+      onSubmit={(e) => {
+        handleSubmit(e);
+      }}
+    >
+      <label htmlFor="startingPoint">Starting Point:</label>
+      <Autocomplete>
+        <input type="text" id="startingPoint" name="startingPoint"></input>
+      </Autocomplete>
+      <br />
+      <label htmlFor="destination">Destination:</label>
+      <Autocomplete>
+        <input type="text" id="destination" name="destination"></input>
+      </Autocomplete>
+      <br />
+      <button type="submit">Take Me!</button>
+    </form>
   );
 }
 
-// export default React.memo(Map);
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck",
+  apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 })(Map);

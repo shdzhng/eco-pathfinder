@@ -9,9 +9,8 @@ const initialState = {
     lat: 0,
     lng: 0,
   },
-  /** @type google.maps.Map */
-  map: "cors-anywhere.herokuapp.com/",
   directions: {},
+  selectedLocation: {},
 };
 
 export const mapSlice = createSlice({
@@ -29,10 +28,17 @@ export const mapSlice = createSlice({
     updateMap: (state, action) => {
       state.value.map = action.payload;
     },
+    updateSelectedLocation: (state, action) => {
+      state.value.selectedLocation = action.payload;
+    },
   },
 });
 
-export const { updateStartLocation, updateEndLocation, updateMap } =
-  mapSlice.actions;
+export const {
+  updateStartLocation,
+  updateEndLocation,
+  updateMap,
+  updateSelectedLocation,
+} = mapSlice.actions;
 
 export default mapSlice.reducer;
