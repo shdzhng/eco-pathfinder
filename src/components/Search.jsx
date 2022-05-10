@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateStartLocation,
-  updateEndLocation,
+  updateDestination,
   updateDirections,
 } from "../app/features/mapSlice";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
@@ -10,7 +10,7 @@ import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
 
 export default function Search() {
-  const { startLocation, map, endLocation, selectedLocation, directions } =
+  const { startLocation, map, destination, selectedLocation, directions } =
     useSelector((state) => state.map).value;
 
   const dispatch = useDispatch();
@@ -40,11 +40,15 @@ export default function Search() {
       lat: parseFloat(lat),
       lng: parseFloat(lng),
     };
+
     if ((location = "origin")) {
       dispatch(updateStartLocation(position));
-    } else {
-      dispatch(updateEndLocation(position));
     }
+
+    if ((location = "destination")) {
+      dispatch(updateDestination(position));
+    }
+
     return lat + "," + lng;
   };
 
@@ -64,8 +68,8 @@ export default function Search() {
     };
 
     const directionsService = new window.google.maps.DirectionsService();
-    const { routes, status } = await directionsService.__proto__.route(req);
-    await dispatch(updateDirections(routes));
+    const results = await directionsService.__proto__.route(req);
+    await dispatch(updateDirections(results));
   };
 
   return (

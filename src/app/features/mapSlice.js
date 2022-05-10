@@ -5,11 +5,11 @@ const initialState = {
     lat: 37.776596,
     lng: -122.391953,
   },
-  endLocation: {
-    lat: 0,
-    lng: 0,
+  destination: {
+    lat: 37.779210641767285,
+    lng: -122.39620161907959,
   },
-  directions: [],
+  directions: null,
   selectedLocation: {},
 };
 
@@ -22,8 +22,8 @@ export const mapSlice = createSlice({
     updateStartLocation: (state, action) => {
       state.value.startLocation = action.payload;
     },
-    updateEndLocation: (state, action) => {
-      state.value.endLocation = action.payload;
+    updateDestination: (state, action) => {
+      state.value.destination = action.payload;
     },
     updateMap: (state, action) => {
       state.value.map = action.payload;
@@ -39,7 +39,7 @@ export const mapSlice = createSlice({
 
 export const {
   updateStartLocation,
-  updateEndLocation,
+  updateDestination,
   updateMap,
   updateSelectedLocation,
   updateDirections,

@@ -2,13 +2,7 @@ import React from "react";
 import mapStyles from "../styles/mapStyles";
 import { useSelector, useDispatch } from "react-redux";
 import { updateSelectedLocation } from "../app/features/mapSlice";
-import {
-  useLoadScript,
-  GoogleMap,
-  Marker,
-  DirectionsRenderer,
-  DirectionsService,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
 import { GoogleApiWrapper } from "google-maps-react";
 import Search from "./Search";
 import { Loader } from "@googlemaps/js-api-loader";
@@ -17,7 +11,7 @@ function Map() {
   const { mapData } = useSelector((state) => state.map.value);
   const dispatch = useDispatch();
 
-  const { startLocation, map, endLocation, selectedLocation, directions } =
+  const { startLocation, map, destination, selectedLocation, directions } =
     useSelector((state) => state.map).value;
 
   const onMapClick = React.useCallback((e) => {
@@ -27,20 +21,6 @@ function Map() {
     };
     dispatch(updateSelectedLocation(newLocation));
   }, []);
-  // const mapRef = React.useRef();
-  // const onMapLoad = React.useCallback((map) => {
-  //   mapRef.current = map;
-  // }, []);
-
-  /////// render map //////
-
-  // const { isLoaded, loadError } = useLoadScript({
-  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-  //   libraries: ["places"],
-  // });
-
-  // if (loadError) return "Error loading maps";
-  // if (!isLoaded) return "Map is Loading";
 
   const loader = new Loader({
     apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -67,10 +47,13 @@ function Map() {
         zoom={15}
         options={options}
         onClick={onMapClick}
-        // onLoad={onMapLoad}
       >
-        {directions && <DirectionsRenderer directions={directions[0]} />}
+        {console.log(origin)}
+        {console.log(destination)}
+        {console.log(directions)}
+        {directions && <DirectionsRenderer directions={directions} />}
         <Marker position={startLocation} />
+        <Marker position={destination} />
         <Marker position={selectedLocation} />
       </GoogleMap>
     </div>
