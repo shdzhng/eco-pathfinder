@@ -1,26 +1,11 @@
 import React from "react";
-import mapStyles from "./mapStyles";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateStartLocation,
   updateEndLocation,
-  updateSelectedLocation,
-} from "./app/features/mapSlice";
-import usePlacesAutocomplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
-import {
-  useLoadScript,
-  GoogleMap,
-  Marker,
-  InfoWindow,
-  InfoBox,
-  Autocomplete,
-  DirectionsRenderer,
-  DirectionsService,
-} from "@react-google-maps/api";
-import { GoogleApiWrapper, google } from "google-maps-react";
+} from "../app/features/mapSlice";
+import { getGeocode, getLatLng } from "use-places-autocomplete";
+import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
 
 export default function Search() {
