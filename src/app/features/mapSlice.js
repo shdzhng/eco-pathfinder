@@ -10,7 +10,7 @@ const initialState = {
     lng: 0,
   },
   /** @type google.maps.Map */
-  map: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck&callback=initMap&v=weekly",
+  map: "cors-anywhere.herokuapp.com/",
   directions: {},
 };
 

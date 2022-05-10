@@ -28,14 +28,23 @@ function Map() {
   const { startLocation, map, endLocation } = useSelector(
     (state) => state.map
   ).value;
+  let latestOrigin = "";
+  let latestDestination = "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newStartingPoint = e.target.startingPoint.value;
-    const newDestination = e.target.destination.value;
-    const originGeocode = await geocodeByAddress(newStartingPoint);
-    const destinationGeocode = await geocodeByAddress(newDestination);
-    const origion = {
+    latestOrigin = e.target.startingPoint.value;
+    latestDestination = e.target.destination.value;
+    e.target.destination.value = "";
+    e.target.startingPoint.value = "";
+    const originGeocode = await geocodeByAddress(latestOrigin).then((res) => {
+      console.log(res);
+    });
+
+    const destinationGeocode = await geocodeByAddress(latestDestination);
+    console.log(originGeocode[0].geometry);
+    console.log(destinationGeocode[0].geometry);
+    const origin = {
       lat: originGeocode[0].geometry.viewport.Ab.g,
       lng: originGeocode[0].geometry.viewport.Ra.g,
     };
@@ -43,8 +52,9 @@ function Map() {
       lat: destinationGeocode[0].geometry.viewport.Ab.g,
       lng: destinationGeocode[0].geometry.viewport.Ra.g,
     };
-    if (origion && destination) {
-      getDirections(origion, destination);
+
+    if (origin && destination) {
+      getDirections(origin, destination);
     } else {
       alert("cannot have empty input");
     }
@@ -58,14 +68,23 @@ function Map() {
   const getDirections = async (newStartingPoint, newDestination) => {
     dispatch(updateStartLocation(newStartingPoint));
     dispatch(updateEndLocation(newDestination));
-    // const directionService = new google.maps.directionService();
-    const request = {
-      origin: newStartingPoint,
-      destination: newDestination,
-      // travelMode: google.maps.TravelMode.DRIVING,
-      // unitSyste: google.maps.unitsystem.IMPERIAL,
-    };
-    // console.log("results: " + request);
+
+    // const request = {
+    //   origin: newStartingPoint,
+    //   destination: newDestination,
+    //   travelMode: google.maps.TravelMode.DRIVING,
+    // };
+
+    const response = await axios
+      .post(
+        `/maps/api/directions/json?key=AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck&origin=${newStartingPoint}&destination=${newDestination}`
+      )
+      .then((response) => {
+        console.log(response.data.routes[0].legs[0].steps);
+      });
+
+    // const directionService = new google.maps.DirectionsService();
+    //     const result = await directionService(request);
   };
 
   if (!isLoaded) {
@@ -81,14 +100,16 @@ function Map() {
             handleSubmit(e);
           }}
         >
-          <label htmlFor="startingPoint">Starting Point</label>
-          <Autocomplete onPlaceSelected={(place) => console.log(place)}>
+          <label htmlFor="startingPoint">Starting Point:{latestOrigin}</label>
+          <Autocomplete>
             <input type="text" id="startingPoint" name="startingPoint"></input>
           </Autocomplete>
-          <label htmlFor="destination">Destination</label>
-          <Autocomplete onPlaceSelected={(place) => console.log(place)}>
+          <br />
+          <label htmlFor="destination">Destination:</label>
+          <Autocomplete>
             <input type="text" id="destination" name="destination"></input>
           </Autocomplete>
+          <br />
           <button type="submit">Show me de wey</button>
         </form>
       </div>
