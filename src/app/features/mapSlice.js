@@ -30,7 +30,6 @@ export const mapSlice = createSlice({
     },
     updateDirections: (state, action) => {
       state.value.directions = action.payload;
-      console.log(action.payload);
     },
     updateSelectedLocation: (state, action) => {
       state.value.selectedLocation = action.payload;

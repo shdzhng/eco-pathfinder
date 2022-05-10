@@ -11,6 +11,7 @@ import {
 } from "@react-google-maps/api";
 import { GoogleApiWrapper } from "google-maps-react";
 import Search from "./Search";
+import { Loader } from "@googlemaps/js-api-loader";
 
 function Map() {
   const { mapData } = useSelector((state) => state.map.value);
@@ -26,7 +27,6 @@ function Map() {
     };
     dispatch(updateSelectedLocation(newLocation));
   }, []);
-
   // const mapRef = React.useRef();
   // const onMapLoad = React.useCallback((map) => {
   //   mapRef.current = map;
@@ -34,13 +34,19 @@ function Map() {
 
   /////// render map //////
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries: ["places"],
-  });
+  // const { isLoaded, loadError } = useLoadScript({
+  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  //   libraries: ["places"],
+  // });
 
-  if (loadError) return "Error loading maps";
-  if (!isLoaded) return "Map is Loading";
+  // if (loadError) return "Error loading maps";
+  // if (!isLoaded) return "Map is Loading";
+
+  const loader = new Loader({
+    apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    version: "weekly",
+    libraries: ["places"],
+  }).load();
 
   const options = {
     styles: mapStyles,

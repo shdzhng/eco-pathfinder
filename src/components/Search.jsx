@@ -12,6 +12,7 @@ import axios from "axios";
 export default function Search() {
   const { startLocation, map, endLocation, selectedLocation, directions } =
     useSelector((state) => state.map).value;
+
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,10 +36,14 @@ export default function Search() {
     const result = await getGeocode({ address });
     const { lat, lng } = await getLatLng(result[0]);
 
+    const position = {
+      lat: parseFloat(lat),
+      lng: parseFloat(lng),
+    };
     if ((location = "origin")) {
-      dispatch(updateStartLocation({ lat, lng }));
+      dispatch(updateStartLocation(position));
     } else {
-      dispatch(updateEndLocation({ lat, lng }));
+      dispatch(updateEndLocation(position));
     }
     return lat + "," + lng;
   };
@@ -61,7 +66,6 @@ export default function Search() {
     const directionsService = new window.google.maps.DirectionsService();
     const { routes, status } = await directionsService.__proto__.route(req);
     await dispatch(updateDirections(routes));
-    console.log(routes);
   };
 
   return (
