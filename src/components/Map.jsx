@@ -11,8 +11,14 @@ function Map() {
   const { mapData } = useSelector((state) => state.map.value);
   const dispatch = useDispatch();
 
-  const { startLocation, map, destination, selectedLocation, directions } =
-    useSelector((state) => state.map).value;
+  const {
+    startLocation,
+    map,
+    destination,
+    ecoMode,
+    selectedLocation,
+    directions,
+  } = useSelector((state) => state.map).value;
 
   const onMapClick = React.useCallback((e) => {
     const newLocation = {
@@ -43,6 +49,15 @@ function Map() {
     lng: -122.391953,
   };
 
+  const checkSteps = () => {
+    {
+      directions.routes[0].legs[0].steps.forEach((step) => {
+        console.log(ecoMode);
+        console.log(step.travel_mode);
+      });
+    }
+  };
+
   return (
     <div id="navContainer">
       <Search />
@@ -54,13 +69,21 @@ function Map() {
         onClick={onMapClick}
       >
         {directions && <DirectionsRenderer directions={directions} />}
+        {/* {directions && checkSteps()} */}
 
-        {directions.routes[0].legs[0].steps.forEach((step) => {
-          console.log(step.travel_mode);
-        })}
-
+        <Marker position={center} />
         <Marker position={selectedLocation} />
       </GoogleMap>
+      <ul id="instructionContainer">
+        {directions &&
+          directions.routes[0].legs[0].steps.map((step) => {
+            return (
+              <li>
+                {step.instructions} ({step.distance.text})
+              </li>
+            );
+          })}
+      </ul>
     </div>
   );
 }

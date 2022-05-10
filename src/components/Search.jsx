@@ -4,13 +4,14 @@ import {
   updateStartLocation,
   updateDestination,
   updateDirections,
+  toggleEcoMode,
 } from "../app/features/mapSlice";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
 
 export default function Search() {
-  const { startLocation, map, destination, selectedLocation, directions } =
+  const { startLocation, ecoMode, destination, selectedLocation, directions } =
     useSelector((state) => state.map).value;
 
   const dispatch = useDispatch();
@@ -52,6 +53,10 @@ export default function Search() {
     return lat + "," + lng;
   };
 
+  const handleEcoButtonClick = () => {
+    dispatch(toggleEcoMode());
+  };
+
   const getDirections = async (origin, destination) => {
     const response = await axios
       .post(
@@ -64,12 +69,39 @@ export default function Search() {
     const req = {
       origin,
       destination,
-      travelMode: "DRIVING",
+      travelMode: "TRANSIT",
+      // travelMode: ecoMode ? "TRANSIT" : "DRIVING",
     };
 
     const directionsService = new window.google.maps.DirectionsService();
     const results = await directionsService.__proto__.route(req);
     await dispatch(updateDirections(results));
+
+    let totalEmission = 0;
+    await results.routes[0].legs[0].steps.forEach((step) => {
+      if (step.transit) {
+        const distance = step.distance.text.split(" ")[0];
+        console.log(distance);
+        switch (step.transit.line.vehicle.type) {
+          case "BUS":
+            totalEmission += 0.85 * distance;
+            break;
+          case "RAIL":
+            totalEmission += 0.14 * distance;
+            break;
+          case "SUBWAY":
+            totalEmission += 0.14 * distance;
+            break;
+          case "TRAIN":
+            totalEmission += 0.11 * distance;
+            break;
+          case "TRAM":
+            totalEmission += 0.01 * distance;
+            break;
+        }
+      }
+    });
+    console.log(totalEmission);
   };
 
   return (
@@ -89,6 +121,15 @@ export default function Search() {
         <input type="text" id="destination" name="destination"></input>
       </Autocomplete>
       <br />
+      <button
+        id="eco"
+        type="button"
+        onClick={() => {
+          handleEcoButtonClick();
+        }}
+      >
+        Eco Mode
+      </button>
       <button type="submit">Take Me!</button>
     </form>
   );
