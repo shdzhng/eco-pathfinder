@@ -4,6 +4,10 @@ import {
   updateStartLocation,
   updateEndLocation,
 } from "./app/features/mapSlice";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
 import {
   useJsApiLoader,
   GoogleMap,
@@ -13,7 +17,6 @@ import {
 } from "@react-google-maps/api";
 import { GoogleApiWrapper, google } from "google-maps-react";
 import axios from "axios";
-import { geocodeByAddress } from "react-google-places-autocomplete";
 
 const containerStyle = {
   width: "400px",
@@ -37,21 +40,23 @@ function Map() {
     latestDestination = e.target.destination.value;
     e.target.destination.value = "";
     e.target.startingPoint.value = "";
-    const originGeocode = await geocodeByAddress(latestOrigin).then((res) => {
-      console.log(res);
-    });
 
-    const destinationGeocode = await geocodeByAddress(latestDestination);
-    console.log(originGeocode[0].geometry);
-    console.log(destinationGeocode[0].geometry);
-    const origin = {
-      lat: originGeocode[0].geometry.viewport.Ab.g,
-      lng: originGeocode[0].geometry.viewport.Ra.g,
+    const findLatLng = async (address, location) => {
+      const result = await getGeocode({ address });
+      const { lat, lng } = await getLatLng(result[0]);
+
+      if ((location = "origin")) {
+        dispatch(updateStartLocation({ lat, lng }));
+      } else {
+        dispatch(updateEndLocation({ lat, lng }));
+      }
+
+      // dispatch(updateEndLocation(destination));
+      return lat + "," + lng;
     };
-    const destination = {
-      lat: destinationGeocode[0].geometry.viewport.Ab.g,
-      lng: destinationGeocode[0].geometry.viewport.Ra.g,
-    };
+
+    const origin = await findLatLng(latestOrigin, "origin");
+    const destination = await findLatLng(latestDestination, "destination");
 
     if (origin && destination) {
       getDirections(origin, destination);
@@ -65,22 +70,14 @@ function Map() {
     libraries: "places",
   });
 
-  const getDirections = async (newStartingPoint, newDestination) => {
-    dispatch(updateStartLocation(newStartingPoint));
-    dispatch(updateEndLocation(newDestination));
-
-    // const request = {
-    //   origin: newStartingPoint,
-    //   destination: newDestination,
-    //   travelMode: google.maps.TravelMode.DRIVING,
-    // };
-
+  const getDirections = async (origin, destination) => {
     const response = await axios
       .post(
-        `/maps/api/directions/json?key=AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck&origin=${newStartingPoint}&destination=${newDestination}`
+        `/maps/api/directions/json?key=AIzaSyAKdW7KHxurf0MqG2goZ9d1Z01Sefs6Uck&origin=${origin}&destination=${destination}`
       )
       .then((response) => {
-        console.log(response.data.routes[0].legs[0].steps);
+        console.log(response.data);
+        console.log(mapData);
       });
 
     // const directionService = new google.maps.DirectionsService();
