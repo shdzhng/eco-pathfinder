@@ -38,22 +38,27 @@ function Map() {
     height: "100vh",
   };
 
+  const center = {
+    lat: 37.776596,
+    lng: -122.391953,
+  };
+
   return (
     <div id="navContainer">
       <Search />
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={startLocation}
+        center={center}
         zoom={15}
         options={options}
         onClick={onMapClick}
       >
-        {console.log(origin)}
-        {console.log(destination)}
-        {console.log(directions)}
         {directions && <DirectionsRenderer directions={directions} />}
-        <Marker position={startLocation} />
-        <Marker position={destination} />
+
+        {directions.routes[0].legs[0].steps.forEach((step) => {
+          console.log(step.travel_mode);
+        })}
+
         <Marker position={selectedLocation} />
       </GoogleMap>
     </div>
