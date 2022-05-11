@@ -30,10 +30,10 @@ export default function Search() {
 
     if (origin && destination) {
       dispatch(clearDirectionsList());
-      getDirections(origin, destination, "DRIVING");
-      getDirections(origin, destination, "TRANSIT");
-      getDirections(origin, destination, "BICYCLING");
-      getDirections(origin, destination, "WALKING");
+      await getDirections(origin, destination, "DRIVING");
+      await getDirections(origin, destination, "TRANSIT");
+      await getDirections(origin, destination, "BICYCLING");
+      await getDirections(origin, destination, "WALKING");
     } else {
       alert("cannot have empty input");
     }
@@ -50,9 +50,7 @@ export default function Search() {
     const results = await directionsService.__proto__.route(req);
     const totalEmission = await calculateEmissions(results);
     dispatch(addToDirectionsList([travelMode, totalEmission, results]));
-    if (travelMode === "TRANSIT") {
-      dispatch(updateDirections(results));
-    }
+    if (travelMode === "TRANSIT") dispatch(updateDirections(results));
   };
 
   const findLatLng = async (address, location) => {
