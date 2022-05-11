@@ -12,6 +12,7 @@ const initialState = {
   directions: null,
   selectedLocation: {},
   ecoMode: false,
+  totalEmission: 0,
 };
 
 export const mapSlice = createSlice({
@@ -35,6 +36,9 @@ export const mapSlice = createSlice({
     updateSelectedLocation: (state, action) => {
       state.value.selectedLocation = action.payload;
     },
+    updateTotalEmission: (state, action) => {
+      state.value.totalEmission = action.payload;
+    },
     toggleEcoMode: (state) => {
       state.value.ecoMode = !state.value.ecoMode;
     },
@@ -48,6 +52,7 @@ export const {
   updateSelectedLocation,
   updateDirections,
   toggleEcoMode,
+  updateTotalEmission,
 } = mapSlice.actions;
 
 export default mapSlice.reducer;

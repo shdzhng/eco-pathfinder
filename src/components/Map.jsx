@@ -18,6 +18,7 @@ function Map() {
     ecoMode,
     selectedLocation,
     directions,
+    totalEmission,
   } = useSelector((state) => state.map).value;
 
   const onMapClick = React.useCallback((e) => {
@@ -49,15 +50,6 @@ function Map() {
     lng: -122.391953,
   };
 
-  const checkSteps = () => {
-    {
-      directions.routes[0].legs[0].steps.forEach((step) => {
-        console.log(ecoMode);
-        console.log(step.travel_mode);
-      });
-    }
-  };
-
   return (
     <div id="navContainer">
       <Search />
@@ -69,16 +61,16 @@ function Map() {
         onClick={onMapClick}
       >
         {directions && <DirectionsRenderer directions={directions} />}
-        {/* {directions && checkSteps()} */}
 
         <Marker position={center} />
         <Marker position={selectedLocation} />
       </GoogleMap>
       <ul id="instructionContainer">
+
         {directions &&
-          directions.routes[0].legs[0].steps.map((step) => {
+          directions.routes[0].legs[0].steps.map((step, i) => {
             return (
-              <li>
+              <li key={i}>
                 {step.instructions} ({step.distance.text})
               </li>
             );

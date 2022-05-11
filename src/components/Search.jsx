@@ -5,14 +5,21 @@ import {
   updateDestination,
   updateDirections,
   toggleEcoMode,
+  updateTotalEmission,
 } from "../app/features/mapSlice";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
 
 export default function Search() {
-  const { startLocation, ecoMode, destination, selectedLocation, directions } =
-    useSelector((state) => state.map).value;
+  const {
+    startLocation,
+    ecoMode,
+    totalEmission,
+    destination,
+    selectedLocation,
+    directions,
+  } = useSelector((state) => state.map).value;
 
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
@@ -76,12 +83,18 @@ export default function Search() {
     const directionsService = new window.google.maps.DirectionsService();
     const results = await directionsService.__proto__.route(req);
     await dispatch(updateDirections(results));
+    await calculateEmissions(results);
+  };
 
+  const calculateEmissions = async (results) => {
     let totalEmission = 0;
+
     await results.routes[0].legs[0].steps.forEach((step) => {
+      let [distance, measurement] = step.distance.text.split(" ");
+      if (measurement === "ft") distance = distance * 0.000189394;
+      distance = parseFloat(distance);
+
       if (step.transit) {
-        const distance = step.distance.text.split(" ")[0];
-        console.log(distance);
         switch (step.transit.line.vehicle.type) {
           case "BUS":
             totalEmission += 0.85 * distance;
@@ -101,7 +114,7 @@ export default function Search() {
         }
       }
     });
-    console.log(totalEmission);
+    dispatch(updateTotalEmission(totalEmission));
   };
 
   return (
@@ -131,6 +144,7 @@ export default function Search() {
         Eco Mode
       </button>
       <button type="submit">Take Me!</button>
+      <p>{totalEmission} pounds of CO2</p>
     </form>
   );
 }
