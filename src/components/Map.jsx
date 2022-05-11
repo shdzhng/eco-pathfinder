@@ -66,7 +66,6 @@ function Map() {
         <Marker position={selectedLocation} />
       </GoogleMap>
       <ul id="instructionContainer">
-
         {directions &&
           directions.routes[0].legs[0].steps.map((step, i) => {
             return (
