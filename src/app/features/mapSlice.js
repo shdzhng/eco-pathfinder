@@ -11,8 +11,6 @@ const initialState = {
   },
   directions: null,
   directionsList: [],
-  selectedLocation: {},
-  ecoMode: false,
   totalEmission: 0,
 };
 

@@ -49,8 +49,20 @@ export default function Search() {
     const directionsService = new window.google.maps.DirectionsService();
     const results = await directionsService.__proto__.route(req);
     const totalEmission = await calculateEmissions(results);
-    dispatch(addToDirectionsList([travelMode, totalEmission, results]));
-    if (travelMode === "TRANSIT") dispatch(updateDirections(results));
+
+    if (travelMode === "TRANSIT") {
+      const stepsArr = [];
+      results.routes[0].legs[0].steps.forEach((step) => {
+        stepsArr.push(step.travel_mode);
+      });
+
+      if (stepsArr.includes("TRANSIT")) {
+        dispatch(addToDirectionsList([travelMode, totalEmission, results]));
+      }
+      dispatch(updateDirections(results));
+    } else {
+      dispatch(addToDirectionsList([travelMode, totalEmission, results]));
+    }
   };
 
   const findLatLng = async (address, location) => {
@@ -98,7 +110,6 @@ export default function Search() {
     });
 
     return totalEmission;
-    dispatch(updateTotalEmission(totalEmission));
   };
 
   return (
@@ -108,18 +119,27 @@ export default function Search() {
         handleSubmit(e);
       }}
     >
-      <label htmlFor="startingPoint">Starting Point:</label>
+      <label htmlFor="startingPoint">Origin:</label>
       <Autocomplete>
-        <input type="text" id="startingPoint" name="startingPoint"></input>
+        <input
+          type="text"
+          id="startingPoint"
+          placeholder="go from where?"
+          name="startingPoint"
+        ></input>
       </Autocomplete>
       <br />
       <label htmlFor="destination">Destination:</label>
       <Autocomplete>
-        <input type="text" id="destination" name="destination"></input>
+        <input
+          type="text"
+          placeholder="where are you headed?"
+          id="destination"
+          name="destination"
+        ></input>
       </Autocomplete>
       <br />
-      <button type="submit">Take Me!</button>
-      {/* <p>{totalEmission} pounds of CO2</p> */}
+      <button type="submit">Let's Go!</button>
     </form>
   );
 }

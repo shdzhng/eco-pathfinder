@@ -1,54 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+
 body {
-  display: grid;
   margin: 0;
+  font-family: "Lato", sans-serif;
 }
 
-label {
-  font-size: 1.5rem;
-  color: #ff00bf;
+#container {
+  background-color: #ecf6ecd3;
+  display: flex;
+}
+
+#sidebarContainer {
+  flex-basis: 35%;
+  flex-shrink: 0;
+}
+
+#directionListContainer,
+form {
+  z-index: 10;
+  left: 1rem;
+  margin: 0;
 }
 
 #directionListContainer {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  z-index: 10;
-  background-color: #ffffff90;
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 0 1rem 0 1rem;
+  font-size: 15px;
 }
 
-ul {
-  z-index: 10;
-  border-radius: 1rem;
-  padding: 0.5rem;
+.singleDirectionContainer {
+  line-height: 0.8rem;
+  margin: 0 0 1rem 0;
+  padding: 0.25rem 1rem;
+  border-radius: 2rem;
+  transition: background-color ease 350ms;
+  cursor: pointer;
+}
+.singleDirectionContainer:hover {
+  background-color: #10bb0020;
+}
+.singleDirectionContainer:active {
+  box-shadow: 0px 2px 2px lightslategray;
+}
+.sustainability-icon {
+  height: 20px;
+  position: sticky;
+}
+.small {
+  font-size: 0.6rem;
+  line-height: 0.5rem;
+}
+
+h1 {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+p {
+  font-size: 0.8rem;
 }
 
 form {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 10;
-  margin: 0;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff90;
-  border-radius: 1rem;
+  justify-content: center;
+}
+
+label {
+  font-size: 1.2rem;
+  font-weight: 900;
+  text-align: left;
+  color: #ff00bf;
+}
+
+input {
+  width: 100%;
 }
 
 button {
-  width: 50%;
+  cursor: pointer;
   border-radius: 1rem;
   border: 0px none;
   background-color: #10bb00;
   color: white;
-  padding: 0.25rem 0;
+  padding: 0.25rem 0.5rem;
   box-shadow: 0px 2px 2px lightslategray;
-  margin-bottom: 0.5rem;
   transition: all ease 350ms;
 }
 
 button:hover {
   background-color: #0b7b01;
+}
+
+@media only screen and (max-width: 650px) {
+  #container {
+    flex-direction: column;
+  }
+  button {
+    width: 50%;
+    align-self: center;
+  }
 }
