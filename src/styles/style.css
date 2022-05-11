@@ -93,12 +93,25 @@ button:hover {
   background-color: #0b7b01;
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 700px) {
   #container {
     flex-direction: column;
   }
   button {
     width: 50%;
     align-self: center;
+  }
+  #directionListContainer {
+    display: flex;
+  }
+  .sustainability-icon {
+    height: 20px;
+    opacity: 50%;
+    float: right;
+    z-index: 9;
+    transform: translateX(-10px);
+  }
+  .singleDirectionContainer {
+    width: 25%;
   }
 }
