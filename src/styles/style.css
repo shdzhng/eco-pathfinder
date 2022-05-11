@@ -11,7 +11,7 @@ label {
 #directionListContainer {
   position: absolute;
   bottom: 1rem;
-  left: 1rem;
+  right: 1rem;
   z-index: 10;
   background-color: #ffffff90;
   border-radius: 1rem;
@@ -25,7 +25,7 @@ ul {
 }
 
 /* li {
-  margin-left: rem;
+  margin-left: 1 rem;
 } */
 
 form {
@@ -45,7 +45,7 @@ button {
   width: 50%;
   border-radius: 1rem;
   border: 0px none;
-  background-color: #ff00bf;
+  background-color: #10bb00;
   color: white;
   padding: 0.25rem 0;
   box-shadow: 0px 2px 2px lightslategray;
@@ -54,13 +54,5 @@ button {
 }
 
 button:hover {
-  background-color: #bb008c;
-}
-
-#eco {
-  background-color: #10bb00;
-}
-
-#eco:hover {
   background-color: #0b7b01;
 }

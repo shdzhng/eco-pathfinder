@@ -14,14 +14,6 @@ function Map() {
   const { selectedLocation, directions, totalEmission, directionsList } =
     useSelector((state) => state.map).value;
 
-  const onMapClick = React.useCallback((e) => {
-    const newLocation = {
-      lat: e.latLng.lat(),
-      lng: e.latLng.lng(),
-    };
-    dispatch(updateSelectedLocation(newLocation));
-  }, []);
-
   const loader = new Loader({
     apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     version: "weekly",
@@ -51,27 +43,41 @@ function Map() {
         center={center}
         zoom={15}
         options={options}
-        onClick={onMapClick}
       >
-        {directions && <DirectionsRenderer directions={directions} />}
+        {directions && (
+          <DirectionsRenderer
+            directions={directions}
+            options={{
+              polylineOptions: {
+                strokeColor: "#ff00bf",
+              },
+            }}
+          />
+        )}
 
         <Marker position={center} />
-        <Marker position={selectedLocation} />
       </GoogleMap>
 
       <div id="directionListContainer">
-        {directionsList.map((route) => {
+        {directionsList.map((route, i) => {
           let [travelMode, emission, direction] = route;
           const duration = direction.routes[0].legs[0].duration.text;
           emission = emission === 0 ? 0 : emission;
           return (
-            <>
-              <h3>{travelMode}</h3>
-              <p>Duration: {duration}</p>
-              <p>
-                {emission ? emission.toFixed(2) + " pounds of CO2" : "ZERO!"}
+            <div key={i} id="singleDirectionContainer">
+              <h3 className="travelMode">{travelMode}</h3>
+              <p className="travelDuration">Duration: {duration}</p>
+              <p className="travelEmission">
+                {emission
+                  ? emission.toFixed(2) + " pounds of CO2"
+                  : "No Emissions!"}
               </p>
-            </>
+              <p className="carpoolAlternative">
+                {travelMode === "DRIVING"
+                  ? `${(emission * 0.7).toFixed(2)}  pounds of CO2 with Carpool`
+                  : ""}
+              </p>
+            </div>
           );
         })}
       </div>

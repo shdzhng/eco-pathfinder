@@ -67,10 +67,6 @@ export default function Search() {
     return lat + "," + lng;
   };
 
-  const handleEcoButtonClick = () => {
-    dispatch(toggleEcoMode());
-  };
-
   const calculateEmissions = async (results) => {
     let totalEmission = 0;
 
