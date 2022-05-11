@@ -1,7 +1,7 @@
 import React from "react";
 import mapStyles from "../styles/mapStyles";
 import { useSelector, useDispatch } from "react-redux";
-import { updateSelectedLocation } from "../app/features/mapSlice";
+import { updateDirections } from "../app/features/mapSlice";
 import { GoogleMap, Marker, DirectionsRenderer } from "@react-google-maps/api";
 import { GoogleApiWrapper } from "google-maps-react";
 import Search from "./Search";
@@ -35,6 +35,10 @@ function Map() {
     lng: -122.391953,
   };
 
+  const handleOnClick = (direction) => {
+    dispatch(updateDirections(direction));
+  };
+
   return (
     <div id="navContainer">
       <Search />
@@ -64,7 +68,13 @@ function Map() {
           const duration = direction.routes[0].legs[0].duration.text;
           emission = emission === 0 ? 0 : emission;
           return (
-            <div key={i} id="singleDirectionContainer">
+            <div
+              onClick={() => {
+                handleOnClick(direction);
+              }}
+              key={i}
+              id="singleDirectionContainer"
+            >
               <h3 className="travelMode">{travelMode}</h3>
               <p className="travelDuration">Duration: {duration}</p>
               <p className="travelEmission">
