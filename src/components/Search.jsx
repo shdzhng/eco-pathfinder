@@ -4,7 +4,6 @@ import {
   updateStartLocation,
   updateDestination,
   updateDirections,
-  toggleEcoMode,
   updateTotalEmission,
   addToDirectionsList,
   clearDirectionsList,
@@ -18,9 +17,9 @@ export default function Search() {
   ).value;
 
   const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const latestOrigin = e.target.startingPoint.value;
     const latestDestination = e.target.destination.value;
     const origin = await findLatLng(latestOrigin, "origin");
@@ -51,7 +50,9 @@ export default function Search() {
     const results = await directionsService.__proto__.route(req);
     const totalEmission = await calculateEmissions(results);
     dispatch(addToDirectionsList([travelMode, totalEmission, results]));
-    dispatch(updateDirections(results));
+    if (travelMode === "TRANSIT") {
+      dispatch(updateDirections(results));
+    }
   };
 
   const findLatLng = async (address, location) => {
