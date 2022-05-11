@@ -7,6 +7,7 @@ import {
   toggleEcoMode,
   updateTotalEmission,
   addToDirectionsList,
+  clearDirectionsList,
 } from "../app/features/mapSlice";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
@@ -29,6 +30,7 @@ export default function Search() {
     e.target.startingPoint.value = "";
 
     if (origin && destination) {
+      dispatch(clearDirectionsList());
       getDirections(origin, destination, "DRIVING");
       getDirections(origin, destination, "TRANSIT");
       getDirections(origin, destination, "BICYCLING");

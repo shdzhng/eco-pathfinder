@@ -43,6 +43,9 @@ export const mapSlice = createSlice({
     toggleEcoMode: (state) => {
       state.value.ecoMode = !state.value.ecoMode;
     },
+    clearDirectionsList: (state, action) => {
+      state.value.directionsList = [];
+    },
     addToDirectionsList: (state, action) => {
       state.value.directionsList = [
         ...state.value.directionsList,
@@ -53,6 +56,7 @@ export const mapSlice = createSlice({
 });
 
 export const {
+  clearDirectionsList,
   addToDirectionsList,
   updateStartLocation,
   updateDestination,
