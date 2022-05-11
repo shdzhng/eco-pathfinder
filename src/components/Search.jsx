@@ -123,17 +123,8 @@ export default function Search() {
         <input type="text" id="destination" name="destination"></input>
       </Autocomplete>
       <br />
-      <button
-        id="eco"
-        type="button"
-        onClick={() => {
-          handleEcoButtonClick();
-        }}
-      >
-        Eco Mode
-      </button>
       <button type="submit">Take Me!</button>
-      <p>{totalEmission} pounds of CO2</p>
+      {/* <p>{totalEmission} pounds of CO2</p> */}
     </form>
   );
 }

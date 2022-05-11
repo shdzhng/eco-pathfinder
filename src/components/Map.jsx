@@ -58,23 +58,23 @@ function Map() {
         <Marker position={center} />
         <Marker position={selectedLocation} />
       </GoogleMap>
-      <div id="directionListContainer"></div>
 
-      {directionsList &&
-        directionsList.forEach((route) => {
-          console.log(route);
+      <div id="directionListContainer">
+        {directionsList.map((route) => {
+          let [travelMode, emission, direction] = route;
+          const duration = direction.routes[0].legs[0].duration.text;
+          emission = emission === 0 ? 0 : emission;
+          return (
+            <>
+              <h3>{travelMode}</h3>
+              <p>Duration: {duration}</p>
+              <p>
+                {emission ? emission.toFixed(2) + " pounds of CO2" : "ZERO!"}
+              </p>
+            </>
+          );
         })}
-
-      {/* <ul id="instructionContainer">
-        {directions &&
-          directions.routes[0].legs[0].steps.map((step, i) => {
-            return (
-              <li key={i}>
-                {step.instructions} ({step.distance.text})
-              </li>
-            );
-          })}
-      </ul> */}
+      </div>
     </div>
   );
 }

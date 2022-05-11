@@ -19,18 +19,14 @@ label {
 }
 
 ul {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
   z-index: 10;
-  background-color: #ffffff90;
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
-li {
-  margin-left: 1rem;
-}
+/* li {
+  margin-left: rem;
+} */
 
 form {
   position: absolute;
