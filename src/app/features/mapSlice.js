@@ -10,6 +10,7 @@ const initialState = {
     lng: -122.39620161907959,
   },
   directions: null,
+  directionsList: [],
   selectedLocation: {},
   ecoMode: false,
   totalEmission: 0,
@@ -42,10 +43,17 @@ export const mapSlice = createSlice({
     toggleEcoMode: (state) => {
       state.value.ecoMode = !state.value.ecoMode;
     },
+    addToDirectionsList: (state, action) => {
+      state.value.directionsList = [
+        ...state.value.directionsList,
+        action.payload,
+      ];
+    },
   },
 });
 
 export const {
+  addToDirectionsList,
   updateStartLocation,
   updateDestination,
   updateMap,

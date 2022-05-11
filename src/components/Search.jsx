@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateStartLocation,
@@ -6,20 +6,15 @@ import {
   updateDirections,
   toggleEcoMode,
   updateTotalEmission,
+  addToDirectionsList,
 } from "../app/features/mapSlice";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
-import axios from "axios";
 
 export default function Search() {
-  const {
-    startLocation,
-    ecoMode,
-    totalEmission,
-    destination,
-    selectedLocation,
-    directions,
-  } = useSelector((state) => state.map).value;
+  const { totalEmission, directionsList } = useSelector(
+    (state) => state.map
+  ).value;
 
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
@@ -34,56 +29,44 @@ export default function Search() {
     e.target.startingPoint.value = "";
 
     if (origin && destination) {
-      getDirections(origin, destination);
+      getDirections(origin, destination, "DRIVING");
+      getDirections(origin, destination, "TRANSIT");
+      getDirections(origin, destination, "BICYCLING");
+      getDirections(origin, destination, "WALKING");
     } else {
       alert("cannot have empty input");
     }
   };
 
+  const getDirections = async (origin, destination, travelMode) => {
+    const req = {
+      origin,
+      destination,
+      travelMode,
+    };
+
+    const directionsService = new window.google.maps.DirectionsService();
+    const results = await directionsService.__proto__.route(req);
+    const totalEmission = await calculateEmissions(results);
+    dispatch(addToDirectionsList([travelMode, totalEmission, results]));
+    dispatch(updateDirections(results));
+  };
+
   const findLatLng = async (address, location) => {
     const result = await getGeocode({ address });
     const { lat, lng } = await getLatLng(result[0]);
-
     const position = {
       lat: parseFloat(lat),
       lng: parseFloat(lng),
     };
-
-    if ((location = "origin")) {
-      dispatch(updateStartLocation(position));
-    }
-
-    if ((location = "destination")) {
-      dispatch(updateDestination(position));
-    }
+    if ((location = "origin")) dispatch(updateStartLocation(position));
+    if ((location = "destination")) dispatch(updateDestination(position));
 
     return lat + "," + lng;
   };
 
   const handleEcoButtonClick = () => {
     dispatch(toggleEcoMode());
-  };
-
-  const getDirections = async (origin, destination) => {
-    const response = await axios
-      .post(
-        `/maps/api/directions/json?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${origin}&destination=${destination}`
-      )
-      .then((response) => {
-        return response.data;
-      });
-
-    const req = {
-      origin,
-      destination,
-      travelMode: "TRANSIT",
-      // travelMode: ecoMode ? "TRANSIT" : "DRIVING",
-    };
-
-    const directionsService = new window.google.maps.DirectionsService();
-    const results = await directionsService.__proto__.route(req);
-    await dispatch(updateDirections(results));
-    await calculateEmissions(results);
   };
 
   const calculateEmissions = async (results) => {
@@ -97,7 +80,7 @@ export default function Search() {
       if (step.transit) {
         switch (step.transit.line.vehicle.type) {
           case "BUS":
-            totalEmission += 0.85 * distance;
+            totalEmission += 0.18 * distance;
             break;
           case "RAIL":
             totalEmission += 0.14 * distance;
@@ -112,8 +95,12 @@ export default function Search() {
             totalEmission += 0.01 * distance;
             break;
         }
+      } else if (step.travel_mode === "DRIVING") {
+        totalEmission += 0.85 * distance;
       }
     });
+
+    return totalEmission;
     dispatch(updateTotalEmission(totalEmission));
   };
 

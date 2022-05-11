@@ -11,15 +11,8 @@ function Map() {
   const { mapData } = useSelector((state) => state.map.value);
   const dispatch = useDispatch();
 
-  const {
-    startLocation,
-    map,
-    destination,
-    ecoMode,
-    selectedLocation,
-    directions,
-    totalEmission,
-  } = useSelector((state) => state.map).value;
+  const { selectedLocation, directions, totalEmission, directionsList } =
+    useSelector((state) => state.map).value;
 
   const onMapClick = React.useCallback((e) => {
     const newLocation = {
@@ -65,7 +58,14 @@ function Map() {
         <Marker position={center} />
         <Marker position={selectedLocation} />
       </GoogleMap>
-      <ul id="instructionContainer">
+      <div id="directionListContainer"></div>
+
+      {directionsList &&
+        directionsList.forEach((route) => {
+          console.log(route);
+        })}
+
+      {/* <ul id="instructionContainer">
         {directions &&
           directions.routes[0].legs[0].steps.map((step, i) => {
             return (
@@ -74,7 +74,7 @@ function Map() {
               </li>
             );
           })}
-      </ul>
+      </ul> */}
     </div>
   );
 }
