@@ -11,7 +11,7 @@ import {
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
 
-export default function Search() {
+export default function SearchBar() {
   const { totalEmission, directionsList } = useSelector(
     (state) => state.map
   ).value;

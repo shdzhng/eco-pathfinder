@@ -11,7 +11,7 @@ body {
 }
 
 #sidebarContainer {
-  flex-basis: 35%;
+  flex-basis: 25%;
   flex-shrink: 0;
 }
 
