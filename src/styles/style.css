@@ -4,14 +4,33 @@ body {
   margin: 0;
   font-family: "Lato", sans-serif;
 }
+#directionSingleDisplayContainer {
+  margin: 0 2rem;
+  overflow-y: true;
+}
+
+#directionSingleDisplayContainer h1 {
+  margin: 1rem 0;
+}
+
+#directionSingleDisplayContainer .direction {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+#directionSingleDisplayContainer button {
+  margin-top: 2rem;
+  background-color: #ff00bf;
+}
 
 #container {
   background-color: #ecf6ecd3;
   display: flex;
+  height: 100vh;
 }
 
 #sidebarContainer {
-  flex-basis: 25%;
+  flex-basis: 35%;
   flex-shrink: 0;
 }
 
@@ -28,7 +47,7 @@ form {
   font-size: 15px;
 }
 
-.singleDirectionContainer {
+.modeContainer {
   line-height: 0.8rem;
   margin: 0 0 1rem 0;
   padding: 0.25rem 1rem;
@@ -36,10 +55,10 @@ form {
   transition: background-color ease 350ms;
   cursor: pointer;
 }
-.singleDirectionContainer:hover {
+.modeContainer:hover {
   background-color: #10bb0020;
 }
-.singleDirectionContainer:active {
+.modeContainer:active {
   box-shadow: 0px 2px 2px lightslategray;
 }
 .sustainability-icon {
@@ -91,6 +110,11 @@ button {
 
 button:hover {
   background-color: #0b7b01;
+}
+
+li {
+  font-size: 0.75rem;
+  margin-right: 1rem;
 }
 
 @media only screen and (max-width: 700px) {

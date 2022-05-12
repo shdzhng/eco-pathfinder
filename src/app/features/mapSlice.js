@@ -10,6 +10,9 @@ const initialState = {
     lng: -122.39620161907959,
   },
   directions: null,
+  haveSearched: false,
+  haveSelectedDirection: false,
+  selectedDirection: {},
   directionsList: [],
   totalEmission: 0,
 };
@@ -20,6 +23,9 @@ export const mapSlice = createSlice({
     value: initialState,
   },
   reducers: {
+    updateHaveSearched: (state) => {
+      state.value.haveSearched = true;
+    },
     updateStartLocation: (state, action) => {
       state.value.startLocation = action.payload;
     },
@@ -32,8 +38,16 @@ export const mapSlice = createSlice({
     updateDirections: (state, action) => {
       state.value.directions = action.payload;
     },
-    updateSelectedLocation: (state, action) => {
-      state.value.selectedLocation = action.payload;
+    updateSelectedDirection: (state, action) => {
+      state.value.selectedDirection = action.payload[0];
+      state.value.totalEmission = action.payload[1];
+    },
+    resetSelectedDirection: (state) => {
+      state.value.selectedDirection = null;
+      state.value.totalEmission = 0;
+    },
+    toggleHaveSelectedDirection: (state, action) => {
+      state.value.haveSelectedDirection = !state.value.haveSelectedDirection;
     },
     updateTotalEmission: (state, action) => {
       state.value.totalEmission = action.payload;
@@ -54,15 +68,18 @@ export const mapSlice = createSlice({
 });
 
 export const {
+  resetSelectedDirection,
   clearDirectionsList,
   addToDirectionsList,
   updateStartLocation,
   updateDestination,
+  toggleHaveSelectedDirection,
   updateMap,
-  updateSelectedLocation,
+  updateSelectedDirection,
   updateDirections,
   toggleEcoMode,
   updateTotalEmission,
+  updateHaveSearched,
 } = mapSlice.actions;
 
 export default mapSlice.reducer;

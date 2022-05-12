@@ -1,30 +1,28 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import {
   updateStartLocation,
   updateDestination,
   updateDirections,
-  updateTotalEmission,
   addToDirectionsList,
+  toggleHaveSelectedDirection,
   clearDirectionsList,
+  updateHaveSearched,
 } from "../app/features/mapSlice";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import { Autocomplete } from "@react-google-maps/api";
 
 export default function SearchBar() {
-  const { totalEmission, directionsList } = useSelector(
-    (state) => state.map
-  ).value;
-
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(updateHaveSearched());
+    // dispatch(toggleHaveSelectedDirection());
     const latestOrigin = e.target.startingPoint.value;
     const latestDestination = e.target.destination.value;
     const origin = await findLatLng(latestOrigin, "origin");
     const destination = await findLatLng(latestDestination, "destination");
-
     e.target.destination.value = "";
     e.target.startingPoint.value = "";
 
