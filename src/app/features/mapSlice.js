@@ -47,13 +47,10 @@ export const mapSlice = createSlice({
       state.value.totalEmission = 0;
     },
     toggleHaveSelectedDirection: (state, action) => {
-      state.value.haveSelectedDirection = !state.value.haveSelectedDirection;
+      state.value.haveSelectedDirection = action.payload;
     },
     updateTotalEmission: (state, action) => {
       state.value.totalEmission = action.payload;
-    },
-    toggleEcoMode: (state) => {
-      state.value.ecoMode = !state.value.ecoMode;
     },
     clearDirectionsList: (state, action) => {
       state.value.directionsList = [];

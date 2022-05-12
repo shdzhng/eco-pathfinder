@@ -3,9 +3,11 @@
 body {
   margin: 0;
   font-family: "Lato", sans-serif;
+  width: 100vw;
 }
 #directionSingleDisplayContainer {
   margin: 0 2rem;
+  width: 90%;
 }
 
 #directionSingleDisplayContainer h1 {
@@ -47,7 +49,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #10bb00;
+  background: #10bb0069;
   border-radius: 10px;
   transition: all ease 350ms;
 }
@@ -59,7 +61,7 @@ body {
 }
 
 #sidebarContainer {
-  flex-basis: 35%;
+  flex-basis: 25%;
   flex-shrink: 0;
 }
 
@@ -174,5 +176,12 @@ button:hover {
   }
   .singleDirectionContainer {
     width: 25%;
+  }
+  #directionSingleDisplayContainer #directions {
+    height: 15vh;
+  }
+  #directionSingleDisplayContainer button {
+    width: 50%;
+    margin-bottom: 2rem;
   }
 }

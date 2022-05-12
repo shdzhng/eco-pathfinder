@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./styles/style.css";
 import Map from "./components/GoogleMap";
 import SearchBar from "./components/SearchBar";
@@ -18,23 +18,19 @@ function App() {
   const { selectedDirection, haveSelectedDirection, haveSearched } =
     useSelector((state) => state.map).value;
 
-  const checkWhatToRender = () => {
-    if (haveSearched && haveSelectedDirection) {
+  const sidebarBody = useMemo(() => {
+    if (haveSelectedDirection) {
       return <DirectionSingleDisplay />;
     } else {
       return <DirectionsList />;
     }
-  };
-
-  useEffect(() => {
-    checkWhatToRender();
-  }, [selectedDirection]);
+  }, [haveSelectedDirection]);
 
   return (
     <div id="container">
       <div id="sidebarContainer">
         <SearchBar />
-        {checkWhatToRender()}
+        {sidebarBody}
       </div>
       <Map />
     </div>

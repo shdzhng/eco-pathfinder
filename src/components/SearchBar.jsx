@@ -18,7 +18,7 @@ export default function SearchBar() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(updateHaveSearched());
-    // dispatch(toggleHaveSelectedDirection());
+    dispatch(toggleHaveSelectedDirection(false));
     const latestOrigin = e.target.startingPoint.value;
     const latestDestination = e.target.destination.value;
     const origin = await findLatLng(latestOrigin, "origin");
@@ -32,8 +32,6 @@ export default function SearchBar() {
       await getDirections(origin, destination, "TRANSIT");
       await getDirections(origin, destination, "BICYCLING");
       await getDirections(origin, destination, "WALKING");
-    } else {
-      alert("cannot have empty input");
     }
   };
 

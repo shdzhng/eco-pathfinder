@@ -13,7 +13,7 @@ export default function DirectionsList() {
   const { directionsList } = useSelector((state) => state.map).value;
 
   const handleOnClick = (direction, emission) => {
-    dispatch(toggleHaveSelectedDirection());
+    dispatch(toggleHaveSelectedDirection(true));
     dispatch(updateSelectedDirection([direction, emission]));
     dispatch(updateDirections(direction));
   };
