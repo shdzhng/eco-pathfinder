@@ -50,7 +50,7 @@ export default function DirectionsList() {
               handleOnClick(direction, emission);
             }}
             key={i}
-            className="modeContainer"
+            className="singleDirectionContainer"
           >
             <h1 className="travelMode">
               {reformatTravelModeChara(travelMode)}

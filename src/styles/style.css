@@ -47,7 +47,11 @@ form {
   font-size: 15px;
 }
 
-.modeContainer {
+#directionListContainer img {
+  transform: translate(70px, -25px);
+}
+
+.singleDirectionContainer {
   line-height: 0.8rem;
   margin: 0 0 1rem 0;
   padding: 0.25rem 1rem;
@@ -55,10 +59,10 @@ form {
   transition: background-color ease 350ms;
   cursor: pointer;
 }
-.modeContainer:hover {
+.singleDirectionContainer:hover {
   background-color: #10bb0020;
 }
-.modeContainer:active {
+.singleDirectionContainer:active {
   box-shadow: 0px 2px 2px lightslategray;
 }
 .sustainability-icon {
@@ -110,11 +114,6 @@ button {
 
 button:hover {
   background-color: #0b7b01;
-}
-
-li {
-  font-size: 0.75rem;
-  margin-right: 1rem;
 }
 
 @media only screen and (max-width: 700px) {
