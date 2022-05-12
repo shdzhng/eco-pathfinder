@@ -54,9 +54,8 @@ export default function DirectionsList() {
           >
             <h1 className="travelMode">
               {reformatTravelModeChara(travelMode)}
+              <span>{emissionElement(emission)}</span>
             </h1>
-
-            <p className="small">{emissionElement(emission)}</p>
 
             <p className="travelDuration">Duration: {duration}</p>
 

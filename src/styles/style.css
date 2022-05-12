@@ -6,7 +6,6 @@ body {
 }
 #directionSingleDisplayContainer {
   margin: 0 2rem;
-  overflow-y: true;
 }
 
 #directionSingleDisplayContainer h1 {
@@ -47,8 +46,14 @@ form {
   font-size: 15px;
 }
 
+#directionListContainer span {
+  font-size: 0.6rem;
+  margin-left: 0.5rem;
+  font-weight: lighter;
+}
+
 #directionListContainer img {
-  transform: translate(70px, -25px);
+  transform: translateX(5px);
 }
 
 .singleDirectionContainer {
@@ -58,6 +63,8 @@ form {
   border-radius: 2rem;
   transition: background-color ease 350ms;
   cursor: pointer;
+
+  background-color: #7fde7610;
 }
 .singleDirectionContainer:hover {
   background-color: #10bb0020;
