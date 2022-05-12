@@ -31,10 +31,16 @@ export default function DirectionSingleDisplay() {
       <div id="directions">
         {selectedDirection.routes[0].legs[0].steps.map((step, i) => {
           return (
-            <div
-              key={i}
-              dangerouslySetInnerHTML={{ __html: step.instructions }}
-            />
+            <>
+              {" "}
+              <div
+                key={i}
+                dangerouslySetInnerHTML={{
+                  __html: i + 1 + ".   " + step.instructions,
+                }}
+              />
+              <br />
+            </>
           );
         })}
       </div>

@@ -31,7 +31,6 @@ body {
 
 #directionSingleDisplayContainer div {
   font-size: 0.75rem;
-  line-height: 1.25rem;
 }
 
 #directionSingleDisplayContainer b {
@@ -48,7 +47,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: yellowgreen;
+  background: #10bb00;
   border-radius: 10px;
   transition: all ease 350ms;
 }
