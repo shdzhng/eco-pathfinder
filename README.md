@@ -20,11 +20,10 @@ JavaScript, React, Redux-Toolkit, CSS, Google Map API
  ```
  $ npm install
  ```
-3. If you wish to use your own Google Maps API key you can do so at .env.local in the root folder. 
+3. If you wish to use your own Google Maps API key you can do so at .env.local in the root folder. Ensure that your credential have the following APIs enabled: Directions API, Geocoding API, Maps Javascript API, Places API
 ```
 REACT_APP_GOOGLE_MAPS_API_KEY = ["YOUR_API_KEY"]
 ```
-Ensure that your credential have the following APIs enabled: Directions API, Geocoding API, Maps Javascript API, Places API
 
 4. Run npm start
  ```
