@@ -18,7 +18,7 @@ export default function DirectionSingleDisplay() {
     travelMode.charAt(0) + travelMode.substring(1).toLowerCase();
 
   const emissionElement = totalEmission ? (
-    `${totalEmission.toFixed(2)} pounds of CO2`
+    `(${totalEmission.toFixed(2)} pounds of CO2)`
   ) : (
     <img className="sustainability-icon" alt="sustainabile option" src={leaf} />
   );
@@ -26,17 +26,18 @@ export default function DirectionSingleDisplay() {
   return (
     <div id="directionSingleDisplayContainer">
       <h1>
-        {travelModeElement} {emissionElement}
+        Travel by {travelModeElement} <span>{emissionElement}</span>
       </h1>
-      {selectedDirection.routes[0].legs[0].steps.map((step, i) => {
-        return (
-          <div
-            className="direction"
-            key={i}
-            dangerouslySetInnerHTML={{ __html: step.instructions }}
-          />
-        );
-      })}
+      <div id="directions">
+        {selectedDirection.routes[0].legs[0].steps.map((step, i) => {
+          return (
+            <div
+              key={i}
+              dangerouslySetInnerHTML={{ __html: step.instructions }}
+            />
+          );
+        })}
+      </div>
       <button
         onClick={() => {
           handleOnClick();

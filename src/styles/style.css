@@ -10,6 +10,13 @@ body {
 
 #directionSingleDisplayContainer h1 {
   margin: 1rem 0;
+  text-align: center;
+}
+
+#directionSingleDisplayContainer span {
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
+  font-weight: lighter;
 }
 
 #directionSingleDisplayContainer .direction {
@@ -20,6 +27,30 @@ body {
 #directionSingleDisplayContainer button {
   margin-top: 2rem;
   background-color: #ff00bf;
+}
+
+#directionSingleDisplayContainer div {
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+}
+
+#directionSingleDisplayContainer b {
+  text-decoration: underline;
+}
+
+#directionSingleDisplayContainer #directions {
+  overflow-y: scroll;
+  height: 50vh;
+}
+
+::-webkit-scrollbar {
+  background-color: rgb(239, 239, 217);
+}
+
+::-webkit-scrollbar-thumb {
+  background: yellowgreen;
+  border-radius: 10px;
+  transition: all ease 350ms;
 }
 
 #container {
@@ -72,6 +103,7 @@ form {
 .singleDirectionContainer:active {
   box-shadow: 0px 2px 2px lightslategray;
 }
+
 .sustainability-icon {
   height: 20px;
   position: sticky;
