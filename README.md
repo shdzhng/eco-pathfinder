@@ -6,8 +6,7 @@
 ## Motivation
 Eco Pathfinder is a proof of concept SPA that envisions a new way of accessing multi-modal travel information to embed the consideration of our carbon footprint into our everyday commute. Eco Pathfinder encourages a “slower” mode of travel by providing users with four travel methods to their destination alongside its CO2 emission. Implicitly promoting carpooling over personal automobiles for long-distance travel and the use of scooter/bicycle over automobile for local journeys.
 
-#### Technologies
-JavaScript, React, Redux-Toolkit, CSS, Google Map API 
+Made with JavaScript, React, Redux-Toolkit, CSS, and Google Map API.
 
 ![SPA Demo](https://media1.giphy.com/media/In4iZ0z4cH0iHHQVmL/giphy.gif?cid=790b76114a32f9db6d0208d88976bf7eb8f7594d377f209d&rid=giphy.gif&ct=g)
 
