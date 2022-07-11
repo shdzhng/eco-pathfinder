@@ -1,7 +1,7 @@
-import React from "react";
-import mapStyles from "../styles/mapStyles";
-import { useSelector } from "react-redux";
-import { GoogleMap, DirectionsRenderer } from "@react-google-maps/api";
+import React from 'react';
+import mapStyles from '../styles/mapStyles';
+import { useSelector } from 'react-redux';
+import { GoogleMap, DirectionsRenderer } from '@react-google-maps/api';
 
 export default function Map() {
   const { startLocation, directions } = useSelector((state) => state.map).value;
@@ -12,8 +12,8 @@ export default function Map() {
   };
 
   const containerStyle = {
-    width: "100vw",
-    height: "100vh",
+    width: '100vw',
+    height: '100vh',
   };
 
   return (
@@ -29,7 +29,7 @@ export default function Map() {
           directions={directions}
           options={{
             polylineOptions: {
-              strokeColor: "#ff00bf",
+              strokeColor: '#ff00bf',
             },
             preserveViewport: true,
           }}

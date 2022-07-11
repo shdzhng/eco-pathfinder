@@ -1,18 +1,11 @@
-import React, { useEffect, useMemo } from "react";
-import "./styles/style.css";
-import Map from "./components/GoogleMap";
-import SearchBar from "./components/SearchBar";
-import DirectionsList from "./components/DirectionsListDisplay";
-import DirectionSingleDisplay from "./components/DirectionSingleDisplay";
-import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleApiWrapper } from "google-maps-react";
-import { useSelector } from "react-redux";
-
-const loader = new Loader({
-  apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-  version: "weekly",
-  libraries: ["places"],
-}).load();
+import React, { useEffect, useMemo } from 'react';
+import './styles/style.css';
+import Map from './components/GoogleMap';
+import SearchBar from './components/SearchBar';
+import DirectionsList from './components/DirectionsListDisplay';
+import DirectionSingleDisplay from './components/DirectionSingleDisplay';
+import { GoogleApiWrapper } from 'google-maps-react';
+import { useSelector } from 'react-redux';
 
 function App() {
   const { selectedDirection, haveSelectedDirection, haveSearched } =
