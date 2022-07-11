@@ -4,7 +4,7 @@
 </div>
 
 ## Motivation
-Eco Pathfinder is a proof of concept SPA that envisions a new way of accessing multi-modal travel information to embed the consideration of our carbon footprint into our everyday commute. Eco Pathfinder encourages a “slower” mode of travel by providing users with four travel methods to their destination alongside its CO2 emission. Implicitly promoting carpooling over personal automobiles for long-distance travel and the use of scooter/bicycle over automobile for local journeys.
+Eco Pathfinder is a proof of concept SPA that envisions a new way of accessing multi-modal travel information to embed the consideration of our carbon footprint into our everyday commute. Eco Pathfinder encourages a “slower” mode of travel by providing users with four travel methods to their destination alongside its CO2 emission. Implicitly promoting carpooling over personal automobiles for long-distance travel and the use of scooter/bicycle over automobile for local journeys. [**LIVE DEMO HERE**](https://ecopath-f76ee.web.app/) 
 
 ▪ Utilized React,Redux,and CSS to compose an interface that illustrates various modes of transit and their impact on the environment, allowing users to make environmentally conscious transportation choices.
 
